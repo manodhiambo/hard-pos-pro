@@ -246,3 +246,17 @@ export default function Dashboard() {
     </>
   );
 }
+
+// Disable static generation for authenticated pages
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
+
+// Disable static generation for authenticated pages
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}

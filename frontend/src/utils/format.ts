@@ -47,3 +47,16 @@ export const getInitials = (name: string): string => {
     .toUpperCase()
     .substring(0, 2);
 };
+
+// Safely parse decimal/number from Prisma (can be string or number)
+export const parseDecimal = (value: string | number | undefined | null): number => {
+  if (value === undefined || value === null) return 0;
+  if (typeof value === 'number') return value;
+  return parseFloat(value) || 0;
+};
+
+// Format decimal for display
+export const formatDecimal = (value: string | number | undefined | null, decimals: number = 2): string => {
+  const num = parseDecimal(value);
+  return num.toFixed(decimals);
+};

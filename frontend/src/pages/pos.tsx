@@ -17,7 +17,7 @@ import { customerService } from '../services/customer.service';
 import { saleService } from '../services/sale.service';
 import { useCartStore } from '../store/cartStore';
 import { hardwareService } from '../services/hardware.service';
-import { formatCurrency } from '../utils/format';
+import { formatCurrency, parseDecimal } from '../utils/format';
 import { Product, Customer } from '../types';
 import toast from 'react-hot-toast';
 
@@ -216,7 +216,7 @@ export default function POS() {
                           </p>
                           {product.stock && product.stock.length > 0 && (
                             <p className="text-xs text-gray-500">
-                              Stock: {parseFloat(product.stock[0].availableQuantity).toFixed(2)}
+                              Stock: {parseDecimal(product.stock[0].availableQuantity).toFixed(2)}
                             </p>
                           )}
                         </div>
@@ -550,4 +550,11 @@ export default function POS() {
       </Layout>
     </>
   );
+}
+
+// Disable static generation for authenticated pages
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
 }

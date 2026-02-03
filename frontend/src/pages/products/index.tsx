@@ -14,7 +14,7 @@ import {
 } from 'react-icons/fi';
 import Layout from '../../components/layout/Layout';
 import { productService } from '../../services/product.service';
-import { formatCurrency } from '../../utils/format';
+import { formatCurrency, parseDecimal } from '../../utils/format';
 import toast from 'react-hot-toast';
 
 export default function Products() {
@@ -141,10 +141,10 @@ export default function Products() {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {data.data.map((product) => {
                         const totalStock = product.stock?.reduce(
-                          (sum, s) => sum + parseFloat(s.availableQuantity),
+                          (sum, s) => sum + parseDecimal(s.availableQuantity),
                           0
                         ) || 0;
-                        const isLowStock = product.reorderLevel && totalStock <= product.reorderLevel;
+                        const isLowStock = product.reorderLevel && totalStock <= parseDecimal(product.reorderLevel);
 
                         return (
                           <tr key={product.id} className="table-row">
@@ -263,4 +263,11 @@ export default function Products() {
       </Layout>
     </>
   );
+}
+
+// Disable static generation for authenticated pages
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
 }

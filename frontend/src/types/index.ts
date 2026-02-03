@@ -84,9 +84,9 @@ export interface Stock {
   productId: string;
   branchId: string;
   locationId?: string;
-  quantity: number;
-  reservedQuantity: number;
-  availableQuantity: number;
+  quantity: string | number;
+  reservedQuantity: string | number;
+  availableQuantity: string | number;
   product?: Product;
   branch?: Branch;
   location?: StorageLocation;

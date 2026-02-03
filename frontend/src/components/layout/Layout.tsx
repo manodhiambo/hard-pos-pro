@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -10,12 +10,27 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
 
-  // Redirect to login if not authenticated
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !isAuthenticated && router.pathname !== '/login') {
+      router.push('/login');
+    }
+  }, [mounted, isAuthenticated, router]);
+
+  // Don't render anything until mounted (client-side only)
+  if (!mounted) {
+    return null;
+  }
+
+  // Redirect if not authenticated
   if (!isAuthenticated && router.pathname !== '/login') {
-    router.push('/login');
     return null;
   }
 
