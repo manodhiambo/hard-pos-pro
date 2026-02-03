@@ -54,6 +54,8 @@ model Branch {
   expenses           Expense[]
   cashRegisters      CashRegister[]
   cashSessions       CashSession[]
+  stockMovements     StockMovement[]
+  stockAdjustments   StockAdjustment[]
 
   @@map("branches")
 }
@@ -487,6 +489,7 @@ model StockAdjustment {
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
 
+  branch   Branch @relation(fields: [branchId], references: [id])
   creator  User?  @relation("AdjustmentCreator", fields: [createdBy], references: [id])
   approver User?  @relation("AdjustmentApprover", fields: [approvedBy], references: [id])
   
@@ -513,6 +516,9 @@ model StockAdjustmentItem {
 
   @@map("stock_adjustment_items")
 }
+
+// Continue with remaining models...
+// (Customer, Sale, Supplier, PurchaseOrder, etc. - keeping exactly as before)
 
 // ============================================================================
 // CUSTOMER MANAGEMENT
@@ -591,9 +597,8 @@ model CustomerProject {
   @@map("customer_projects")
 }
 
-// ============================================================================
-// SUPPLIER MANAGEMENT
-// ============================================================================
+// Continue with remaining models exactly as before...
+// I'll add the rest to keep this complete
 
 model Supplier {
   id              String   @id @default(uuid())
@@ -649,10 +654,6 @@ model SupplierProduct {
 
   @@map("supplier_products")
 }
-
-// ============================================================================
-// PURCHASING
-// ============================================================================
 
 model PurchaseOrder {
   id                   String    @id @default(uuid())
@@ -785,10 +786,6 @@ model GoodsReceiptItem {
   @@map("goods_receipt_items")
 }
 
-// ============================================================================
-// SALES & POS
-// ============================================================================
-
 model Sale {
   id                String    @id @default(uuid())
   saleNumber        String    @unique @map("sale_number")
@@ -907,10 +904,6 @@ model CuttingLog {
   @@map("cutting_log")
 }
 
-// ============================================================================
-// PAYMENTS
-// ============================================================================
-
 model Payment {
   id               String   @id @default(uuid())
   paymentNumber    String   @unique @map("payment_number")
@@ -963,10 +956,6 @@ model PaymentSplit {
 
   @@map("payment_splits")
 }
-
-// ============================================================================
-// RETURNS & REFUNDS
-// ============================================================================
 
 model SalesReturn {
   id             String   @id @default(uuid())
@@ -1026,10 +1015,6 @@ model SalesReturnItem {
   @@map("sales_return_items")
 }
 
-// ============================================================================
-// SPECIAL ORDERS & DEPOSITS
-// ============================================================================
-
 model SpecialOrder {
   id              String   @id @default(uuid())
   orderNumber     String   @unique @map("order_number")
@@ -1087,10 +1072,6 @@ model SpecialOrderItem {
   @@map("special_order_items")
 }
 
-// ============================================================================
-// TOOL RENTALS
-// ============================================================================
-
 model ToolRental {
   id                 String    @id @default(uuid())
   rentalNumber       String    @unique @map("rental_number")
@@ -1137,10 +1118,6 @@ model ToolRental {
 
   @@map("tool_rentals")
 }
-
-// ============================================================================
-// TRANSFERS (INTER-BRANCH)
-// ============================================================================
 
 model StockTransfer {
   id                  String    @id @default(uuid())
@@ -1206,10 +1183,6 @@ model StockTransferItem {
   @@map("stock_transfer_items")
 }
 
-// ============================================================================
-// EXPENSES
-// ============================================================================
-
 model ExpenseCategory {
   id          String   @id @default(uuid())
   categoryName String  @unique @map("category_name")
@@ -1252,10 +1225,6 @@ model Expense {
 
   @@map("expenses")
 }
-
-// ============================================================================
-// CASH MANAGEMENT
-// ============================================================================
 
 model CashRegister {
   id           String   @id @default(uuid())
@@ -1326,10 +1295,6 @@ model CashDrop {
 
   @@map("cash_drops")
 }
-
-// ============================================================================
-// AUDIT & ACTIVITY LOGS
-// ============================================================================
 
 model AuditLog {
   id         String   @id @default(uuid())
